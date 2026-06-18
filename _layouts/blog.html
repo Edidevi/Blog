@@ -157,7 +157,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   }
 
-  .card-thumb {
+  .card- {
     height: 140px;
     display: flex;
     align-items: center;
@@ -166,9 +166,8 @@
     flex-shrink: 0;
   }
 
-  .card-thumb.aws    { background: linear-gradient(135deg, #E6F1FB, #B5D4F4); }
   .card-thumb.ai     { background: linear-gradient(135deg, #EAF3DE, #C0DD97); }
-  .card-thumb.devops { background: linear-gradient(135deg, #FAEEDA, #FAC775); }
+  .card-thumb.networking { background: linear-gradient(135deg, #FAEEDA, #FAC775); }
   .card-thumb.cloud  { background: linear-gradient(135deg, #EEEDFE, #CECBF6); }
   .card-thumb.other  { background: linear-gradient(135deg, #F1EFE8, #D3D1C7); }
 
@@ -312,8 +311,8 @@
     {% else %}
     {% for post in site.posts %}
     <a class="blog-card" href="{{ post.url }}" data-tags="{{ post.tags | join: ',' | downcase }}">
-      <div class="card-thumb {{ post.thumb_class | default: 'aws' }}">
-        {{ post.thumb_emoji | default: '📝' }}
+      <div class="card-thumb {{ post.thumb_class | default: 'cloud' }}">
+        {{ post._emoji | default: '📝' }}
       </div>
       <div class="card-body">
         <div class="card-meta">
