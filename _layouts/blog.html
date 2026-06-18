@@ -1,0 +1,363 @@
+---
+layout: default
+title: Blog
+permalink: /blog/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — {{ site.title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d1117;
+    --paper: #f8f7f4;
+    --accent: #1a6cf5;
+    --muted: #6b7280;
+    --border: #e5e2db;
+    --card: #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  .site-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4rem;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .topbar-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .topbar-nav { display: flex; gap: 2rem; list-style: none; }
+
+  .topbar-nav a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .topbar-nav a:hover { color: var(--accent); }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  /* FILTER TABS */
+  .filter-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  .filter-btn {
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* CARD GRID */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .blog-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .card-thumb {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .card-thumb.aws    { background: linear-gradient(135deg, #E6F1FB, #B5D4F4); }
+  .card-thumb.ai     { background: linear-gradient(135deg, #EAF3DE, #C0DD97); }
+  .card-thumb.devops { background: linear-gradient(135deg, #FAEEDA, #FAC775); }
+  .card-thumb.cloud  { background: linear-gradient(135deg, #EEEDFE, #CECBF6); }
+  .card-thumb.other  { background: linear-gradient(135deg, #F1EFE8, #D3D1C7); }
+
+  .card-body {
+    padding: 1.1rem 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .card-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: #eef3ff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .card-excerpt {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .card-read {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.78rem;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 5rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-text { font-size: 0.78rem; color: var(--muted); }
+  .footer-text a { color: var(--accent); text-decoration: none; }
+  .footer-text a:hover { text-decoration: underline; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 860px) {
+    .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .blog-grid { grid-template-columns: 1fr; }
+    .page-title { font-size: 1.8rem; }
+    .topbar-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="site-wrapper">
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <a class="topbar-logo" href="/">{{ site.title | upcase }}</a>
+    <ul class="topbar-nav">
+      {% for item in site.nav %}
+      <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <span class="eyebrow">Writing</span>
+    <h1 class="page-title">Blog</h1>
+    <p class="page-subtitle">Notes on AWS, AI, and things I'm building.</p>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterPosts('all', this)">All</button>
+    {% assign tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+    {% for tag in tags %}
+    <button class="filter-btn" onclick="filterPosts('{{ tag | strip | downcase }}', this)">{{ tag | strip }}</button>
+    {% endfor %}
+  </div>
+
+  <!-- BLOG GRID -->
+  <div class="blog-grid" id="blog-grid">
+    {% if site.posts.size == 0 %}
+    <div class="empty-state">No posts yet — check back soon.</div>
+    {% else %}
+    {% for post in site.posts %}
+    <a class="blog-card" href="{{ post.url }}" data-tags="{{ post.tags | join: ',' | downcase }}">
+      <div class="card-thumb {{ post.thumb_class | default: 'aws' }}">
+        {{ post.thumb_emoji | default: '📝' }}
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span>{{ post.date | date: "%b %Y" }}</span>
+          {% if post.tags.first %}
+          <span>·</span>
+          <span class="card-tag">{{ post.tags.first }}</span>
+          {% endif %}
+        </div>
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+        <div class="card-footer">
+          {% if post.read_time %}<span>{{ post.read_time }} min read</span>{% else %}<span></span>{% endif %}
+          <span class="card-read">Read →</span>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-text">Maintained by <a href="https://github.com/{{ site.github_username }}" target="_blank">{{ site.title }}</a></span>
+    <span class="footer-text">Hosted on <a href="{{ site.footer.hosted_url }}" target="_blank">{{ site.footer.hosted_on }}</a></span>
+  </footer>
+
+</div>
+
+<script>
+  function filterPosts(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.blog-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      card.style.display = (tag === 'all' || tags.includes(tag)) ? 'flex' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
