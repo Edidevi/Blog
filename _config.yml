@@ -1,6 +1,7 @@
 title: Edidevi
 github_username: Edidevi
 
+theme: null
 nav:
   - label: Blog
     url: /Blog/blog/
