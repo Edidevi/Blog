@@ -4,8 +4,15 @@ github_username: Edidevi
 plugins: []
 
 nav:
-  - label: Blog
-    url: /Blog/
+  - label: About
+    url: https://edidevi.github.io/About/
+  - label: Linkedin
+    url: https://www.linkedin.com/in/osaru-e-4011a7192/
+  - label: AWS
+    url: https://edidevi.github.io/AWS/
+  - label: Networking
+    url: https://edidevi.github.io/My-Work/
+
 
 footer:
   hosted_on: GitHub Pages
